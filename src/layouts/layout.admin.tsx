@@ -22,7 +22,7 @@ const { Content, Sider } = Layout;
 const LayoutAdmin = () => {
   const [collapsed, setCollapsed] = useState(false);
   const [activeMenu, setActiveMenu] = useState("");
-  const { user, setUser, setIsAuthenticated, isAuthenticated, setCarts } =
+  const { user, setUser, setIsAuthenticated, isAuthenticated } =
     useCurrentApp();
   const location = useLocation();
   const navigate = useNavigate();
@@ -68,7 +68,6 @@ const LayoutAdmin = () => {
     const res = await logoutAPI();
     if (res.data) {
       setUser(null);
-      setCarts([]);
       setIsAuthenticated(false);
       localStorage.removeItem("access_token");
       localStorage.removeItem("carts");

@@ -1,6 +1,6 @@
 import { fetchAccountAPI } from "@/services/api";
 import { createContext, useContext, useEffect, useState } from "react";
-import PacmanLoader from "react-spinners/PacmanLoader";
+import { RingLoader } from "react-spinners";
 
 interface IAppContext {
   isAuthenticated: boolean;
@@ -9,9 +9,6 @@ interface IAppContext {
   user: IUser | null;
   isAppLoading: boolean;
   setIsAppLoading: (v: boolean) => void;
-
-  carts: ICart[];
-  setCarts: (v: ICart[]) => void;
 }
 
 const CurrentAppContext = createContext<IAppContext | null>(null);
@@ -23,25 +20,20 @@ type TProps = {
 export const AppProvider = (props: TProps) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [user, setUser] = useState<IUser | null>(null);
-  const [isAppLoading, setIsAppLoading] = useState<boolean>(true);
-  const [carts, setCarts] = useState<ICart[]>([]);
+  const [isAppLoading, setIsAppLoading] = useState<boolean>(false);
 
-  useEffect(() => {
-    const fetchAccount = async () => {
-      const res = await fetchAccountAPI();
-      const carts = localStorage.getItem("carts");
-      if (res.data) {
-        setUser(res.data.user);
-        setIsAuthenticated(true);
-        if (carts) {
-          setCarts(JSON.parse(carts));
-        }
-      }
-      setIsAppLoading(false);
-    };
+  //   useEffect(() => {
+  //     const fetchAccount = async () => {
+  //       const res = await fetchAccountAPI();
+  //       if (res.data) {
+  //         setUser(res.data.user);
+  //         setIsAuthenticated(true);
+  //       }
+  //       setIsAppLoading(false);
+  //     };
 
-    fetchAccount();
-  }, []);
+  //     fetchAccount();
+  //   }, []);
 
   return (
     <>
@@ -53,9 +45,7 @@ export const AppProvider = (props: TProps) => {
             setIsAuthenticated,
             setUser,
             isAppLoading,
-            setIsAppLoading,
-            carts,
-            setCarts
+            setIsAppLoading
           }}
         >
           {props.children}
@@ -69,7 +59,7 @@ export const AppProvider = (props: TProps) => {
             transform: "translate(-50%, -50%)"
           }}
         >
-          <PacmanLoader size={30} color="#36d6b4" />
+          <RingLoader size={50} color="black" />
         </div>
       )}
     </>

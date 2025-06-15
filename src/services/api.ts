@@ -35,17 +35,14 @@ export const updatePaymentOrderAPI = (
   );
 };
 
-export const loginAPI = (username: string, password: string) => {
+export const loginAPI = (phone: string) => {
   const urlBackend = "/api/v1/auth/login";
-  return axios.post<IBackendRes<ILogin>>(
-    urlBackend,
-    { username, password },
-    {
-      headers: {
-        delay: 1000
-      }
-    }
-  );
+  return axios.post<IBackendRes<ILogin>>(urlBackend, phone);
+};
+
+export const verifyOtpAPI = async (phone: string, otp: string) => {
+  const urlBackend = await axios.post("/api/auth/verify-otp", { phone, otp });
+  return axios.post<IBackendRes<ILogin>>(urlBackend, phone);
 };
 
 export const registerAPI = (
