@@ -35,9 +35,17 @@ export const updatePaymentOrderAPI = (
   );
 };
 
-export const loginAPI = (phone: string) => {
+export const loginAPI = (username: string, password: string) => {
   const urlBackend = "/api/v1/auth/login";
-  return axios.post<IBackendRes<ILogin>>(urlBackend, phone);
+  return axios.post<IBackendRes<ILogin>>(
+    urlBackend,
+    { username, password },
+    {
+      headers: {
+        delay: 1000
+      }
+    }
+  );
 };
 
 export const verifyOtpAPI = async (phone: string, otp: string) => {
@@ -263,10 +271,10 @@ export const updateUserPasswordAPI = (
   });
 };
 
-export const getOrdersAPI = (query: string) => {
-  const urlBackend = `/api/v1/order?${query}`;
-  return axios.get<IBackendRes<IModelPaginate<IOrderTable>>>(urlBackend);
-};
+// export const getOrdersAPI = (query: string) => {
+//   const urlBackend = `/api/v1/order?${query}`;
+//   return axios.get<IBackendRes<IModelPaginate<IOrderTable>>>(urlBackend);
+// };
 
 export const getDashboardAPI = () => {
   const urlBackend = `/api/v1/database/dashboard`;

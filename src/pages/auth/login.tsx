@@ -1,16 +1,16 @@
-import { App, Button, Divider, Form, Input } from "antd";
-import { useNavigate } from "react-router-dom";
+import { App, Button, Form, Input } from "antd";
+import { Link, useNavigate } from "react-router-dom";
 import "./login.scss";
 import { useState } from "react";
 import type { FormProps } from "antd";
 import { loginAPI, loginWithGoogleAPI } from "@/services/api";
-import { GooglePlusOutlined } from "@ant-design/icons";
 import { useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import { useCurrentApp } from "@/contexts/app.context";
 
 type FieldType = {
-  phone: string;
+  username: string;
+  password: string;
 };
 
 const LoginPage = () => {
@@ -20,16 +20,16 @@ const LoginPage = () => {
   const { setIsAuthenticated, setUser } = useCurrentApp();
 
   const onFinish: FormProps<FieldType>["onFinish"] = async (values) => {
-    const { phone } = values;
+    const { username, password } = values;
     setIsSubmit(true);
-    const res = await loginAPI(phone);
+    const res = await loginAPI(username, password);
     setIsSubmit(false);
     if (res?.data) {
       setIsAuthenticated(true);
       setUser(res.data.user);
       localStorage.setItem("access_token", res.data.access_token);
       message.success("Đăng nhập tài khoản thành công!");
-      navigate("/admin");
+      navigate("/");
     } else {
       notification.error({
         message: "Có lỗi xảy ra",
@@ -53,9 +53,7 @@ const LoginPage = () => {
         }
       );
       if (data && data.email) {
-        //call backend create user
         const res = await loginWithGoogleAPI("GOOGLE", data.email);
-
         if (res?.data) {
           setIsAuthenticated(true);
           setUser(res.data.user);
@@ -77,63 +75,81 @@ const LoginPage = () => {
   });
 
   return (
-    <div className="login-page">
-      <main className="main">
-        <div className="container">
-          <section className="wrapper">
-            <div className="heading">
-              <h2 className="text text-large" style={{ textAlign: "center" }}>
-                ĐĂNG NHẬP
-              </h2>
-              <Divider style={{ borderColor: "#7cb305" }} />
-            </div>
-            <Form name="login-form" onFinish={onFinish} autoComplete="off">
-              <Form.Item<FieldType>
-                labelCol={{ span: 24 }}
-                name="phone"
-                label="Số điện thoại"
-                rules={[
-                  { required: true, message: "Vui lòng nhập số điện thoại!" },
-                  {
-                    pattern: /^(3|5|7|8|9)\d{8}$/,
-                    message: "Số điện thoại không hợp lệ!"
-                  }
-                ]}
-              >
-                <Input addonBefore="+84" style={{ width: "100%" }} />
-              </Form.Item>
-              <Form.Item>
-                <Button
-                  style={{ width: "100%" }}
-                  type="primary"
-                  htmlType="submit"
-                  loading={isSubmit}
-                >
-                  GỬI MÃ OTP
-                </Button>
-              </Form.Item>
-              <Divider style={{ borderColor: "#7cb305" }}>
-                HOẶC ĐĂNG NHẬP VỚI
-              </Divider>
-              <div
-                onClick={() => loginGoogle()}
-                title="Đăng nhập với tài khoản Google"
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  gap: 10,
-                  textAlign: "center",
-                  marginBottom: 25,
-                  cursor: "pointer"
-                }}
-              >
-                <GooglePlusOutlined style={{ fontSize: 30, color: "orange" }} />
-              </div>
-            </Form>
-          </section>
-        </div>
-      </main>
+    <div className="login-layout">
+      <div className="image-side">
+        <img src="/images/logo.png" alt="login art" />
+      </div>
+
+      <div className="form-side">
+        <Form
+          name="login-form"
+          onFinish={onFinish}
+          autoComplete="off"
+          layout="vertical"
+          className="login-form"
+        >
+          <h2 className="login-title">WELCOME BACK</h2>
+          <p className="login-subtitle">
+            Welcome back! Please enter your details.
+          </p>
+
+          <Form.Item<FieldType>
+            label="Email"
+            name="username"
+            rules={[
+              { required: true, message: "Email cannot be blank!" },
+              { type: "email", message: "Email is not in correct format!" }
+            ]}
+          >
+            <Input placeholder="Enter your email" />
+          </Form.Item>
+
+          <Form.Item<FieldType>
+            label="Password"
+            name="password"
+            rules={[{ required: true, message: "Password cannot be blank!" }]}
+          >
+            <Input.Password placeholder="**********" />
+          </Form.Item>
+
+          <div className="form-options">
+            <label>
+              <input type="checkbox" />
+              <span> Remember me</span>
+            </label>
+            <Link to="/" className="forgot-link">
+              Forgot password
+            </Link>
+          </div>
+
+          <Form.Item>
+            <Button
+              htmlType="submit"
+              loading={isSubmit}
+              className="btn-primary"
+            >
+              Sign in
+            </Button>
+          </Form.Item>
+
+          <div className="social-btn" onClick={() => loginGoogle()}>
+            <img src="/images/google-logo.png" alt="Google" />
+            <span>Continue with Google</span>
+          </div>
+
+          <div className="social-btn" onClick={() => loginGoogle()}>
+            <img src="/images/facebook-logo.png" alt="Facebook" />
+            <span>Continue with Facebook</span>
+          </div>
+
+          <p className="signup-text">
+            Don’t have an account?{" "}
+            <Link to="/" className="signup-link">
+              Sign up for free!
+            </Link>
+          </p>
+        </Form>
+      </div>
     </div>
   );
 };
