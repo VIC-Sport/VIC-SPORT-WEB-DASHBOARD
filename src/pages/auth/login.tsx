@@ -59,7 +59,7 @@ const LoginPage = () => {
           setUser(res.data.user);
           localStorage.setItem("access_token", res.data.access_token);
           message.success("Đăng nhập tài khoản thành công!");
-          navigate("/");
+          navigate("/admin");
         } else {
           notification.error({
             message: "Có lỗi xảy ra",
