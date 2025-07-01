@@ -1,4 +1,4 @@
-import { useCurrentApp } from "@/contexts/app.context";
+import { useCurrentApp } from "@/components/context/app.context";
 import { Button, Result } from "antd";
 import { Link, useLocation } from "react-router-dom";
 

@@ -13,7 +13,7 @@
       "@/*": ["./src/*"],
       "assets/*": ["./src/assets/*"],
       "components/*": ["./src/components/*"],
-      "contexts/*": ["./src/contexts/*"],
+      "contexts/*": ["src/components/context/*"],
       "pages/*": ["./src/pages/*"],
       "services/*": ["./src/services/*"],
       "layouts/*": ["./src/layouts/*"],

@@ -6,7 +6,7 @@ import type { FormProps } from "antd";
 import { loginAPI, loginWithGoogleAPI } from "@/services/api";
 import { useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
-import { useCurrentApp } from "@/contexts/app.context";
+import { useCurrentApp } from "@/components/context/app.context";
 
 type FieldType = {
   username: string;

@@ -10,7 +10,7 @@ import ProtectedRoute from "./components/auth";
 import LayoutAdmin from "./layouts/layout.admin";
 import DashBoardPage from "./pages/admin/dashboard";
 import ManageUserPage from "./pages/admin/manage.user";
-import { AppProvider } from "./contexts/app.context";
+import { AppProvider } from "./components/context/app.context";
 
 const router = createBrowserRouter([
   {
